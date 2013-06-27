@@ -37,7 +37,7 @@ function Manolo(input, opt) {
 
     });
 
-    return output;
+    return ir.toHTML();
 }
 
 /*

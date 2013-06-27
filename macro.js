@@ -66,4 +66,6 @@ macro.parse = function (line) {
     };
 }
 
+/* (T|G)ROFF Macros */
+
 module.exports = macro;
