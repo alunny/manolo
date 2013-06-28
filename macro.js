@@ -68,4 +68,11 @@ macro.parse = function (line) {
 
 /* (T|G)ROFF Macros */
 
+macro['B'] = function (args) {
+    var current = this.current(), i;
+
+    for (i = 0; i < args.length; i++)
+        current.nodes.push({ type: 'bold', text: args[i] });
+}
+
 module.exports = macro;
