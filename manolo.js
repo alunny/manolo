@@ -16,7 +16,7 @@ function Manolo(input, opt) {
         inputLines = input.split('\n');
 
     inputLines.forEach(function (line) {
-        var m;
+        var m, mFunction;
 
         if (textLine(line)) {
             ir.addText(line)
@@ -25,10 +25,11 @@ function Manolo(input, opt) {
             // ir.addCommmentLine
             // console.log('comment = %s', line);
         } else {
-            m = macro.parse(line)
+            m = macro.parse(line);
+            mFunction = macro[m.command];
 
-            if (macro[m.command]) {
-                macro[m.command].call(ir, m.args)
+            if (mFunction) {
+                ir.macro(mFunction, m.args);
             } else {
                 console.warn('Unrecognized macro: %s', m.command);
             }
