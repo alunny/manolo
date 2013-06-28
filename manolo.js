@@ -19,7 +19,7 @@ function Manolo(input, opt) {
         var m;
 
         if (textLine(line)) {
-            // ir.addText(line)
+            ir.addText(line)
             // console.log('text = %s', line);
         } else if (commentLine(line)) {
             // ir.addCommmentLine
@@ -37,7 +37,7 @@ function Manolo(input, opt) {
 
     });
 
-    return ir.toHTML();
+    return ir;
 }
 
 /*

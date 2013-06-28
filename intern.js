@@ -3,10 +3,30 @@ var assert = require('assert');
 // internal representation of man object
 function Intern() {
     this.nodes = [];
-    this.state = 0;
+    this.state = null;
+    this.paragraph;
 }
 
 Intern.prototype.addText = function (text) {
+    if (!this.state) {
+        this.state = 'paragraph';
+    }
+
+    if (this.state == 'paragraph') {
+        if (!this.paragraph) {
+            this.paragraph = {
+                type: 'paragraph',
+                nodes: []
+            }
+
+            this.nodes.push(this.paragraph);
+        }
+
+        this.paragraph.nodes.push({
+            type: 'roman',
+            text: text
+        });
+    }
 }
 
 Intern.prototype.addCommment = function (comment) {}
