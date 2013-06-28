@@ -3,33 +3,26 @@ var assert = require('assert');
 // internal representation of man object
 function Intern() {
     this.nodes = [];
-    this.state = null;
-    this.paragraph;
 }
 
 Intern.prototype.addText = function (text) {
-    if (!this.state) {
-        this.state = 'paragraph';
+    var current = this.current();
+
+    if (!current) {
+        current = { type: 'paragraph', nodes: [] };
+        this.nodes.push(current);
     }
 
-    if (this.state == 'paragraph') {
-        if (!this.paragraph) {
-            this.paragraph = {
-                type: 'paragraph',
-                nodes: []
-            }
-
-            this.nodes.push(this.paragraph);
-        }
-
-        this.paragraph.nodes.push({
-            type: 'roman',
-            text: text
-        });
-    }
+    current.nodes.push({ type: 'roman', text: text });
 }
 
 Intern.prototype.addCommment = function (comment) {}
+
+Intern.prototype.current = function () {
+    if (this.nodes.length) {
+        return this.nodes[this.nodes.length - 1];
+    }
+}
 
 // simple macro execution
 Intern.prototype.macro = function (macro, args) {
