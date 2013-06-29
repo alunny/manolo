@@ -72,7 +72,7 @@ macro['B'] = function (args) {
     var current = this.current(), i;
 
     for (i = 0; i < args.length; i++)
-        current.nodes.push({ type: 'bold', text: args[i] });
+        current.nodes.push({ type: 'bold', text: args[i].trim() });
 }
 
 module.exports = macro;
