@@ -68,27 +68,38 @@ macro.parse = function (line) {
 
 /* (T|G)ROFF Macros */
 
-macro['B'] = function (args) {
-    var current = this.current(), i;
+macro.alternateText = function (first, second) {
+    return function (args) {
+        var current = this.current(),
+            i, type = first;
 
-    for (i = 0; i < args.length; i++)
-        current.nodes.push({ type: 'bold', text: args[i].trim() });
-}
+        for (i=0; i < args.length; i++) {
+            current.nodes.push({ type: type, text: args[i].trim() });
 
-macro['BI'] = function (args) {
-    var current = this.current(),
-        type = 'bold';
-
-    for (i=0; i < args.length; i++) {
-        current.nodes.push({ type: type, text: args[i].trim() });
-
-        if (type == 'bold') {
-            type = 'italics';
-        } else {
-            type = 'bold';
+            if (type == first) {
+                type = second;
+            } else {
+                type = first;
+            }
         }
-
     }
 }
+
+macro.singleText = function (type) {
+    return function (args) {
+        var current = this.current(), i;
+
+        for (i = 0; i < args.length; i++)
+            current.nodes.push({ type: type, text: args[i].trim() });
+    }
+}
+
+macro['B'] = macro.singleText('bold');
+
+macro['I'] = macro.singleText('italics');
+
+macro['BI'] = macro.alternateText('bold', 'italics');
+
+macro['BR'] = macro.alternateText('bold', 'roman');
 
 module.exports = macro;
