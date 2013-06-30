@@ -102,4 +102,12 @@ macro['BI'] = macro.alternateText('bold', 'italics');
 
 macro['BR'] = macro.alternateText('bold', 'roman');
 
+macro['IB'] = macro.alternateText('italics', 'bold');
+
+macro['IR'] = macro.alternateText('italics', 'roman');
+
+macro['RB'] = macro.alternateText('roman', 'bold');
+
+macro['RI'] = macro.alternateText('roman', 'italics');
+
 module.exports = macro;
