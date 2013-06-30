@@ -18,6 +18,18 @@ Intern.prototype.addText = function (text) {
 
 Intern.prototype.addCommment = function (comment) {}
 
+// a terrible hack for now
+Intern.prototype.addLine = function () {
+    var current = this.current();
+
+    if (!current) {
+        current = { type: 'paragraph', nodes: [] };
+        this.nodes.push(current);
+    }
+
+    current.nodes.push({ type: 'roman', text: ' ' });
+}
+
 Intern.prototype.current = function () {
     if (this.nodes.length) {
         return this.nodes[this.nodes.length - 1];
@@ -61,7 +73,7 @@ function serializeParagraph(pg) {
             default:
                 return node.text;
         }
-    }).join(' ');
+    }).join('').trim();
 
 }
 
