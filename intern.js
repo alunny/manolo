@@ -40,13 +40,6 @@ function serialize(_node) {
                 str += '<p>' + serializeParagraph(node) + '</p>';
                 break;
 
-            case 'roman':
-                str += node.text;
-                break;
-
-            case 'bold':
-                str += node.text.bold();
-
             default:
                 console.log('unhandled type ', node.type);
         }
@@ -61,6 +54,9 @@ function serializeParagraph(pg) {
             // yay javascript's terrible history
             case 'bold':
                 return node.text.bold();
+
+            case 'italics':
+                return node.text.italics();
 
             default:
                 return node.text;

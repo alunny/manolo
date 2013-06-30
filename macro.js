@@ -75,4 +75,20 @@ macro['B'] = function (args) {
         current.nodes.push({ type: 'bold', text: args[i].trim() });
 }
 
+macro['BI'] = function (args) {
+    var current = this.current(),
+        type = 'bold';
+
+    for (i=0; i < args.length; i++) {
+        current.nodes.push({ type: type, text: args[i].trim() });
+
+        if (type == 'bold') {
+            type = 'italics';
+        } else {
+            type = 'bold';
+        }
+
+    }
+}
+
 module.exports = macro;
