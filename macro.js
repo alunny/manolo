@@ -110,4 +110,9 @@ macro['RB'] = macro.alternateText('roman', 'bold');
 
 macro['RI'] = macro.alternateText('roman', 'italics');
 
+macro['PP'] = function (args) {
+    // ignore args, create new paragraph
+    this.nodes.push( { type: 'paragraph', nodes: [] } );
+}
+
 module.exports = macro;
