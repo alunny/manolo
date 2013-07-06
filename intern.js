@@ -6,34 +6,24 @@ function Intern() {
 }
 
 Intern.prototype.addText = function (text) {
-    var current = this.current();
-
-    if (!current) {
-        current = { type: 'paragraph', nodes: [] };
-        this.nodes.push(current);
-    }
-
-    current.nodes.push({ type: 'roman', text: text.trim() });
+    this.current().nodes.push({ type: 'roman', text: text.trim() });
 }
 
 Intern.prototype.addCommment = function (comment) {}
 
 // a terrible hack for now
 Intern.prototype.addLine = function () {
-    var current = this.current();
-
-    if (!current) {
-        current = { type: 'paragraph', nodes: [] };
-        this.nodes.push(current);
-    }
-
-    current.nodes.push({ type: 'roman', text: ' ' });
+    this.current().nodes.push({ type: 'roman', text: ' ' });
 }
 
-Intern.prototype.current = function () {
-    if (this.nodes.length) {
-        return this.nodes[this.nodes.length - 1];
+Intern.prototype.current = function (type) {
+    type = type || 'paragraph';
+
+    if (!this.nodes.length) {
+        this.nodes.push( { type: type, nodes: [] } );
     }
+
+    return this.nodes[this.nodes.length - 1];
 }
 
 // simple macro execution
