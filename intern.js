@@ -6,7 +6,7 @@ function Intern() {
 }
 
 Intern.prototype.addText = function (text) {
-    this.current().nodes.push({ type: 'roman', text: text.trim() });
+    this.current().nodes.push({ type: 'roman', text: text });
 }
 
 Intern.prototype.addCommment = function (comment) {}
@@ -100,7 +100,7 @@ function serializeTexts(nodes) {
             default:
                 return node.text;
         }
-    }).join('').trim();
+    }).join('');
 
 }
 

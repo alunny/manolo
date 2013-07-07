@@ -74,7 +74,7 @@ macro.alternateText = function (first, second) {
             i, type = first;
 
         for (i=0; i < args.length; i++) {
-            current.nodes.push({ type: type, text: args[i].trim() });
+            current.nodes.push({ type: type, text: args[i] });
 
             if (type == first) {
                 type = second;
@@ -87,10 +87,10 @@ macro.alternateText = function (first, second) {
 
 macro.singleText = function (type) {
     return function (args) {
-        var current = this.current(), i;
+        var current = this.current(),
+            text = args.join(' ');
 
-        for (i = 0; i < args.length; i++)
-            current.nodes.push({ type: type, text: args[i].trim() });
+        current.nodes.push({ type: type, text: text });
     }
 }
 
@@ -120,7 +120,7 @@ macro['P'] = newParagraph;
 
 // section header (h2)
 macro['SH'] = function (args) {
-    this.nodes.push ( { type: 'section-header', text: args[0].trim() });
+    this.nodes.push ( { type: 'section-header', text: args[0] });
     this.nodes.push ( { type: 'paragraph', nodes: [] } );
 }
 
