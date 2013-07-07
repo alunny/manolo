@@ -1,5 +1,10 @@
 var macro = {},
-    WHITESPACE = /\s+/;
+    WHITESPACE = /\s+/,
+    FONTS = {
+        B: 'bold',
+        I: 'italics',
+        R: 'roman'
+    };
 
 function parseArgs(argsString) {
     var args = [],
@@ -40,6 +45,30 @@ function parseArgs(argsString) {
     return args;
 }
 
+function inlineFormat(str, font, nodeList) {
+    var mark = str.indexOf('\\f'),
+        start = 0;
+
+    FONTS.P = font;
+
+    if (mark === -1) {
+        nodeList.push({ type: font, text: str });
+        return;
+    }
+
+    while (mark < str.length && mark > -1) {
+        nodeList.push({ type: font, text: str.substr(start, mark) });
+
+        font = FONTS[str.charAt(mark + 2)];
+        str = str.substr(mark + 3);
+        mark = str.indexOf('\\f');
+    }
+
+    if (str.length) {
+        nodeList.push({ type: font, text: str });
+    }
+}
+
 /*
  * input: control line calling a macro
  * output: object containing:
@@ -74,7 +103,7 @@ macro.alternateText = function (first, second) {
             i, type = first;
 
         for (i=0; i < args.length; i++) {
-            current.nodes.push({ type: type, text: args[i] });
+            inlineFormat(args[i], type, current.nodes);
 
             if (type == first) {
                 type = second;
@@ -87,10 +116,9 @@ macro.alternateText = function (first, second) {
 
 macro.singleText = function (type) {
     return function (args) {
-        var current = this.current(),
-            text = args.join(' ');
+        var current = this.current();
 
-        current.nodes.push({ type: type, text: text });
+        inlineFormat(args.join(' '), type, current.nodes);
     }
 }
 
