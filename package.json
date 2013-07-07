@@ -1,10 +1,10 @@
 {
   "name": "manolo",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "troff/groff file parser",
   "main": "manolo.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/*"
   },
   "repository": "",
   "keywords": [
@@ -12,7 +12,7 @@
     "roff",
     "man",
     "manual",
-    "roff"
+    "groff"
   ],
   "author": "Andrew Lunny <alunny@gmail.com>",
   "license": "MIT"
