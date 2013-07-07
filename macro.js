@@ -115,4 +115,22 @@ macro['PP'] = function (args) {
     this.nodes.push( { type: 'paragraph', nodes: [] } );
 }
 
+// section header (h2)
+macro['SH'] = function (args) {
+    this.nodes.push ( { type: 'section-header', text: args[0].trim() });
+    this.nodes.push ( { type: 'paragraph', nodes: [] } );
+}
+
+// definition list (dl/dt/dd)
+macro['TP'] = function (args) {
+    var list;
+
+    if (this.currentTopLevel() && this.currentTopLevel().type !== 'definition-list') {
+        this.nodes.push ( { type: 'definition-list', items: [] })
+    }
+
+    list = this.currentTopLevel();
+    list.items.push( { type: 'definition-term', nodes: [] } );
+}
+
 module.exports = macro;

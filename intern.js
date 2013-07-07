@@ -11,18 +11,36 @@ Intern.prototype.addText = function (text) {
 
 Intern.prototype.addCommment = function (comment) {}
 
-// a terrible hack for now
-Intern.prototype.addLine = function () {
+Intern.prototype.lineComplete = function () {
+    // a terrible hack for now
     this.current().nodes.push({ type: 'roman', text: ' ' });
+
+    // adjust state as the current node requires
+    if (this.current().type === 'definition-term') {
+        this.currentTopLevel().items.push( { type: 'definition-definition', nodes: [] } )
+    }
 }
 
-Intern.prototype.current = function (type) {
-    type = type || 'paragraph';
+Intern.prototype.current = function (opts) {
+    var current;
+
+    opts = opts || {};
+    type = opts.type || 'paragraph';
 
     if (!this.nodes.length) {
         this.nodes.push( { type: type, nodes: [] } );
     }
 
+    current = this.nodes[this.nodes.length - 1];
+
+    if (current.items) {
+        current = current.items[current.items.length - 1];
+    }
+
+    return current;
+}
+
+Intern.prototype.currentTopLevel = function () {
     return this.nodes[this.nodes.length - 1];
 }
 
@@ -33,25 +51,41 @@ Intern.prototype.macro = function (macro, args) {
 }
 
 // _node must contain an array of nodes
-function serialize(_node) {
+function serialize(nodes) {
     var str = '';
 
-    _node.nodes.forEach(function (node) {
+    nodes.forEach(function (node) {
         switch (node.type) {
             case 'paragraph':
-                str += '<p>' + serializeParagraph(node) + '</p>';
+                str += '<p>' + serializeTexts(node.nodes) + '</p>';
+                break;
+
+            case 'section-header':
+                str += '<h2>' + node.text + '</h2>';
+                break;
+
+            case 'definition-list':
+                str += '<dl>' + serialize(node.items) + '</dl>';
+                break;
+
+            case 'definition-term':
+                str += '<dt>' + serializeTexts(node.nodes) + '</dt>';
+                break;
+
+            case 'definition-definition':
+                str += '<dd>' + serializeTexts(node.nodes) + '</dd>';
                 break;
 
             default:
-                console.log('unhandled type ', node.type);
+                console.warn('unhandled type ', node.type);
         }
     })
 
     return str;
 }
 
-function serializeParagraph(pg) {
-    return pg.nodes.map(function (node) {
+function serializeTexts(nodes) {
+    return nodes.map(function (node) {
         switch (node.type) {
             // yay javascript's terrible history
             case 'bold':
@@ -68,7 +102,7 @@ function serializeParagraph(pg) {
 }
 
 Intern.prototype.toHTML = function () {
-    return serialize(this);
+    return serialize(this.nodes);
 }
 
 module.exports = Intern;

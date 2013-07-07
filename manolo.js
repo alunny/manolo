@@ -36,7 +36,7 @@ function Manolo(input, opt) {
             // console.log(util.inspect(line));
         }
 
-        ir.addLine();
+        ir.lineComplete();
     });
 
     return ir;
