@@ -110,10 +110,13 @@ macro['RB'] = macro.alternateText('roman', 'bold');
 
 macro['RI'] = macro.alternateText('roman', 'italics');
 
-macro['PP'] = function (args) {
-    // ignore args, create new paragraph
+function newParagraph() {
     this.nodes.push( { type: 'paragraph', nodes: [] } );
 }
+
+macro['PP'] = newParagraph;
+macro['LP'] = newParagraph;
+macro['P'] = newParagraph;
 
 // section header (h2)
 macro['SH'] = function (args) {
@@ -131,6 +134,22 @@ macro['TP'] = function (args) {
 
     list = this.currentTopLevel();
     list.items.push( { type: 'definition-term', nodes: [] } );
+}
+
+macro['br'] = function () {
+    this.current().nodes.push( { type: 'line-break' } );   
+}
+
+// ABOUT - not directly translatable to DOM
+macro['TH'] = function (args) {
+    this.title = args[0];
+
+    if (args.length > 1)
+        this.section = args[1];
+}
+
+macro['LO'] = function (args) {
+    this.section = args[0];
 }
 
 module.exports = macro;

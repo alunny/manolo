@@ -94,6 +94,9 @@ function serializeTexts(nodes) {
             case 'italics':
                 return node.text.italics();
 
+            case 'line-break':
+                return '<br>';
+
             default:
                 return node.text;
         }
