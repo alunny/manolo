@@ -18,12 +18,15 @@ function Manolo(input, opt) {
     inputLines.forEach(function (line) {
         var m, mFunction;
 
-        if (textLine(line)) {
+        if (commentLine(line)) {
+            // TODO separate execution flow
+            return;
+        }
+
+        if (line.length == 0) {
+            ir.addLineBreak();
+        } else if (textLine(line)) {
             ir.addText(line)
-            // console.log('text = %s', line);
-        } else if (commentLine(line)) {
-            // ir.addCommmentLine
-            // console.log('comment = %s', line);
         } else {
             m = macro.parse(line);
             mFunction = macro[m.command];

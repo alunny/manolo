@@ -137,7 +137,7 @@ macro['TP'] = function (args) {
 }
 
 macro['br'] = function () {
-    this.current().nodes.push( { type: 'line-break' } );   
+    this.addLineBreak();
 }
 
 // ABOUT - not directly translatable to DOM

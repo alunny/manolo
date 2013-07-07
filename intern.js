@@ -11,13 +11,17 @@ Intern.prototype.addText = function (text) {
 
 Intern.prototype.addCommment = function (comment) {}
 
-Intern.prototype.lineComplete = function () {
-    // a terrible hack for now
-    this.current().nodes.push({ type: 'roman', text: ' ' });
+Intern.prototype.addLineBreak = function () {
+    this.current().nodes.push( { type: 'line-break' } );
+}
 
-    // adjust state as the current node requires
-    if (this.current().type === 'definition-term') {
+// adjust state as the current node requires
+Intern.prototype.lineComplete = function () {
+    if (this.current().type === 'definition-term' && this.current().nodes.length) {
         this.currentTopLevel().items.push( { type: 'definition-definition', nodes: [] } )
+    } else {
+        // a terrible hack for now
+        this.current().nodes.push({ type: 'roman', text: ' ' });
     }
 }
 
