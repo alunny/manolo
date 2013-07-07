@@ -19,9 +19,11 @@ function Manolo(input, opt) {
         var m, mFunction;
 
         if (commentLine(line)) {
-            // TODO separate execution flow
+            // TODO: separate execution flow
             return;
         }
+
+        line = processLineEscapes(line);
 
         if (line.length == 0) {
             ir.addLineBreak();
@@ -65,6 +67,14 @@ function textLine(line) {
  */
 function commentLine(line) {
     return COMMENT.test(line);
+}
+
+function processLineEscapes(line) {
+    var matches = line.match(/\\./g);
+
+    return line.replace(/\\\-/g, '-')
+                .replace(/\\\^/g, '') // honestly, I dunno what it does
+                .replace(/\\e/g, '\\');
 }
 
 module.exports = Manolo;
